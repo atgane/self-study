@@ -2,7 +2,7 @@
 COUNT=0
 
 # 환경 변수가 없으면 설정
-if [ -z "SINTERVAL" ]; then
+if [ -z "$INTERVAL" ]; then
     INTERVAL=3
 fi
 

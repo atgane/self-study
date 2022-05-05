@@ -1,0 +1,28 @@
+# 카운터 초기화
+COUNT=0
+
+# 환경 변수가 없으면 설정
+if [ -z "$INTERVAL" ]; then
+    INTERVAL=3
+fi
+
+if [ -f save.dat ]; then
+    COUNT=`cat save.dat`
+    rm -f save.dat
+fi
+
+# SIGTERM 수신 시 처리 <-- (2) 추가 처리 #2
+save() {
+    echo $COUNT > save.dat
+    exit 0
+}
+trap save TERM ## 시그널 핸들러 정의, SIGTERM을 받으면 save()를 수행
+
+# 메인 루프
+while [ true ];
+do
+    TM=`date|awk '{print $4}'`
+    printf "%s : %s \n" $TM $COUNT
+    let COUNT=COUNT+1
+    sleep $INTERVAL
+done
