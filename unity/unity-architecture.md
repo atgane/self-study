@@ -1,4 +1,4 @@
-[https://docs.unity3d.com/kr/2020.3/Manual/UnderstandingAutomaticMemoryManagement.html](https://docs.unity3d.com/kr/2020.3/Manual/UnderstandingAutomaticMemoryManagement.html)
+[https://docs.unity3d.com/kr/2020.3/Manual/unity-architecture.html](https://docs.unity3d.com/kr/2020.3/Manual/unity-architecture.html)
 
 # 유니티 닷넷 개요
 
