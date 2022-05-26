@@ -103,3 +103,23 @@ public void UsedOnlyForAOTCodeGeneration()
 ```
 
 컴파일러가 AnyEnum의 T로 적힌 OnMessage의 명시적 호출을 만났을 때, 런타임 실행 시 적절한 코드를 생성한다. UsedOnlyForAOTCodeGeneration 메서드는 호출될 필요가 없어지고, 단지 컴파일러가 인지할 수 있도록 존재하게 된다. 
+
+### No threads
+
+어떤 플랫폼은 쓰레드를 지원하지 않는다. 따라서 System.Threading 네임스페이스를 사용하는 코드는 런타임 오류가 뜰 수 있다. 또한, 닷넷 클래스 라이브러리의 몇몇 부분은 암묵적으로 쓰레드에 의존한다. System.Timers.Timer와 같이 종종 사용되는 예제의 클래스의 경우, 쓰레드에 의존되어 있다. 
+
+### Exception filters
+
+IL2CPP은 C# 예외 필터를 지원하지 않는다. 따라서 catch로 관리되는 코드를 적절히 변경해야 한다. 
+
+### TypedReference
+
+IL2CPP는 __makeref 타입의 System.TypedReference 키워드를 지원하지 않는다. 
+
+### MarshalAs and FieldOffset attributes
+
+IL2CPP은 런타임에서 MarshalAs와 FieldOffset 어트리뷰트의 reflection을 지원하지 않는다. 컴파일 시간에는 지원한다. 
+
+### The dynamic keyword
+
+IL2CPP은 C#의 dynamic 키워드를 지원하지 않는다. 
