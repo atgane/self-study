@@ -142,3 +142,37 @@ Player Settings -> Managed Stripping Level 옵션을 사용하여 유니티가 �
 ### Managed code stripping의 이해
 
 유니티에서 프로젝트를 빌드하면 C# 코드를 CIL이라는 닷넷 바이트코드 형식으로 컴파일한다. CIL코드는 어셈블리로 패키징된다. 빌드 프로세스는 프로젝트에서 사용되는 어셈블리 코드의 분량과 관계없이 어셈블리 파일 전체를 포함한다(~~?~~).
+
+### UnityLinker
+
+유니티 빌드 프로세스는 UnityLinker라는 툴을 이용하여 Managed code stripping을 실행한다. UnityLinker는 유니티에서 작동하도록 커스터마이징된 Mono IL Linker이다. 
+
+#### UnityLinker의 원리
+
+UnityLinker는 프로젝트의 모든 어셈블리를 분석한다. 먼저 상위 레벨, 루트 타입, 메서드, 프로퍼티, 필드 등을 마킹한다. 씬의 게임 오브젝트에 추가한 MonoBehaviour 파생 클래스는 루트 타입이다. 다음으로 UnityLinker는 마킹한 루트를 분석하여 이러한 루트가 의존하는 모든 관리되는 코드를 식별하고 마킹한다. 정적 분석 후 마킹되지 않은 모든 잔류 코드를 실행 할 수 없는 것으로 파악하고 어셈블리에서 삭제한다. 
+
+#### Reflection and code stripping
+
+UnityLinker는 프로젝트 코드가 reflection을 통해 다른 코드를 참조하는 인스턴스를 감지하지 못할 수 있다. Managed Stripping Level을 높이면 이런 위험이 증가한다. 
+
+UnityLinker는 일부 reflection 패턴을 감지하고 처리할 수 있다. 하지만 reflection을 본격적으로 사용하려면 UnityLinker에 변경하지 않을 클래스에 대한 힌트를 제공해야 한다. 이런 힌트를 link.xml 파일과 Preserve 속성을 통해 제공할 수 있다. 
+
+#### Preserve 속성
+
+UnityLinker의 코드 스트리핑을 막으려면 `[Preserve]`속성을 이용하자. 다음 리스트는 UnityLinker가 어떤 엔티티를 보존하는지 나타낸다. 
+
+* Assembly: 모든 타입에 `[Preserve]` 속성을 적용한 것처럼 어셈블리의 모든 타입을 보존한다. 
+```cs
+using System;
+  using UnityEngine.Scripting;
+
+  [assembly: Preserve]
+
+  namespace Example
+  {
+      public class Foo {}
+  }
+```
+* Type: 타입과 기본 생성자를 보존한다. 
+* Method: 선언 타입, 반환 타입, 메서드의 모든 인수 
+* Property: 

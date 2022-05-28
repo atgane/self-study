@@ -316,4 +316,3 @@ Object.Destroy or Object.DestroyImmediate 등과 같은 메서드를 이용하�
 ## async 및 await 사용 지양
 
 유니티 API는 스레드에 안전하지 않으므로 async 및 await을 쓰지 않도록 한다. 
-
