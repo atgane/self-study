@@ -149,7 +149,7 @@ Player Settings -> Managed Stripping Level 옵션을 사용하여 유니티가 �
 
 #### UnityLinker의 원리
 
-UnityLinker는 프로젝트의 모든 어셈블리를 분석한다. 먼저 상위 레벨, 루트 타입, 메서드, 프로퍼티, 필드 등을 마킹한다. 씬의 게임 오브젝트에 추가한 MonoBehaviour 파생 클래스는 루트 타입이다. 다음으로 UnityLinker는 마킹한 루트를 분석하여 이러한 루트가 의존하는 모든 관리되는 코드를 식별하고 마킹한다. 정적 분석 후 마킹되지 않은 모든 잔류 코드를 실행 할 수 없는 것으로 파악하고 어셈블리에서 삭제한다. 
+UnityLinker는 프로젝트의 모든 어셈블리를 분석한다. 먼저 상위 레벨, 루트 타입, 메서드, 프로퍼티, 필드 등을 마킹한다. 씬의 게임 오브젝트에 추가한 MonoBehaviour 파생 클래스는 루트 타입이다. 다음으로 UnityLinker는 마킹한 루트를 분석하여 이러한 루트가 의존하는 모든 관리되는 코드를 식별하고 마킹한다. **정적 분석 후 마킹되지 않은 모든 잔류 코드를 실행 할 수 없는 것으로 파악하고 어셈블리에서 삭제**한다. 
 
 #### Reflection and code stripping
 
@@ -175,4 +175,33 @@ using System;
 ```
 * Type: 타입과 기본 생성자를 보존한다. 
 * Method: 선언 타입, 반환 타입, 메서드의 모든 인수 
-* Property: 
+* Property: 프로퍼티, 프로퍼티의 선언 타입, 게터 세터를 보존한다. 
+* Field: 필드, 선언 타입과 필드 타입을 보존한다. 
+* Event: 이벤트, 이벤트의 선언 타입, 반환 타입, 추가 메서드와 제거 메서드를 보존한다. 
+* Delegate: 델리게이트 타입과 모든 델리게이트 메서드를 보존한다. 
+
+
+link.xml을 통해 세부적인 제어가 가능하다. 모든 어셈블리와 네임스페이스에 Preserve 속성을 정의할 수 있다. UnityEngine.Scripting.PreserveAttribute 클래스를 이용하거나, 서브 클래스를 지정하거나, PreserveAttribute 클래스를 생성할 수 있다. 
+
+```cs
+class Foo
+{
+    [UnityEngine.Scripting.Preserve]
+    public void UsingUnityPreserve(){}
+
+    [CustomPreserve]
+    public void UsingCustomPreserve(){}
+
+    [Preserve]
+    public void UsingOwnPreserve(){}
+}
+
+class CustomPreserveAttribute : UnityEngine.Scripting.PreserveAttribute {}
+
+class PreserveAttribute : System.Attribute {}
+```
+
+### UnityLinker가 어셈블리를 스트리밍하는 방식
+
+유니티에디터는 유니티 **프로젝트의 씬에서 사용된 타입을 포함하는 어셈블리의 목록을 추려 UnityLinker에 전달**한다. UnityLinker는 해당 어셈블리, 모든 참조, link.xml파일에 선언된 어셈블리 및 AlwaysLinkAssembly 속성이 정의된 어셈블리를 처리한다. 이외 어셈블리는 빌드에 포함시키지 않는다. 
+
