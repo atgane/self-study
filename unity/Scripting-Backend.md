@@ -205,3 +205,10 @@ class PreserveAttribute : System.Attribute {}
 
 유니티에디터는 유니티 **프로젝트의 씬에서 사용된 타입을 포함하는 어셈블리의 목록을 추려 UnityLinker에 전달**한다. UnityLinker는 해당 어셈블리, 모든 참조, link.xml파일에 선언된 어셈블리 및 AlwaysLinkAssembly 속성이 정의된 어셈블리를 처리한다. 이외 어셈블리는 빌드에 포함시키지 않는다. 
 
+UnityLinker는 어셈블리를 처리할 때 MManaged Stripping Level에 따라 일련의 규칙을 가지고 어셈블리를 분류한다. 
+
+* .NET Class Library assemblies - mscorlib.dll과 System.dll과 같은 Mono클래스 라이브러리 및 netstandard.dll과 같은 닷넷 클래스 라이브러리 파사드 어셈블리(~~?~~)를 모두 포함한다.
+* Platform SDK assemblies - 플랫폼 SDK의 관리되는 어셈블리를 포함한다. 
+* Unity Engine Module assemblies - UnityEngine.Core.dll 등 유니티 엔진을 구성하는 관리되는 어셈블리를 포함한다. 
+* Project assemblies - 프로젝트 어셈블리를 포함한다. 
+
