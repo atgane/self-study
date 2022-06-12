@@ -1,8 +1,12 @@
 fn main() {
-    let a = [1, 2, 3, 4, 5];
-    let index = 10;
+let mut s1 = String::from("hello");
+let mut s2 = s1.clone();
 
-    let element = a[index];
+prints(&mut s1);
+println!("s1 = {}, s2 = {}", &s1, &s2);
+}
 
-    println!("The value of element is: {}", element);
+fn prints(s: &mut String) {
+    println!("{}", s);
+    s.pop();
 }
