@@ -1,12 +1,13 @@
 fn main() {
-let mut s1 = String::from("hello");
-let mut s2 = s1.clone();
+    let mut s = String::from("Hsdlsadlfsa");
+    {
+        let r = &mut s;
+        r.push('a');
+    }
 
-prints(&mut s1);
-println!("s1 = {}, s2 = {}", &s1, &s2);
-}
-
-fn prints(s: &mut String) {
+    {
+        let p = &mut s;
+        p.push('a');
+    }
     println!("{}", s);
-    s.pop();
 }
