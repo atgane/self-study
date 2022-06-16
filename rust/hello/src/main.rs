@@ -1,13 +1,22 @@
-fn main() {
-    let mut s = String::from("hello world");
 
-    let s1 = new_str(&s);
-    println!("{}", s);
-    println!("{}", s1);
-    s.clear();
-    println!("{}", s1);
+#[derive(Debug)]
+struct Rectangle {
+    length: u32,
+    width: u32,
 }
 
-fn new_str(s: &String) -> &str {
-    &s[..]
+impl Rectangle {
+    fn area(&mut self) -> u32 {
+        self.length += 1;
+        self.length * self.width
+    }
+}
+
+fn main() {
+    let mut rect1 = Rectangle { length: 50, width: 30 };
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect1.area()
+    );
 }
