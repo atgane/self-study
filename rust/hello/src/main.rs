@@ -1,22 +1,24 @@
+fn main() {
+    let s = [1, 2, 3];
+    
+    let a = f1(s[0]);
 
-#[derive(Debug)]
-struct Rectangle {
-    length: u32,
-    width: u32,
-}
+    match a {
+        None => println!("even number"),
+        Some(i) => println!("odd number {}", i)
+    }
 
-impl Rectangle {
-    fn area(&mut self) -> u32 {
-        self.length += 1;
-        self.length * self.width
+    if let Some(i) = a {
+        println!("odd number {}", i);
+    }
+    else {
+        println!("even number");
     }
 }
 
-fn main() {
-    let mut rect1 = Rectangle { length: 50, width: 30 };
-
-    println!(
-        "The area of the rectangle is {} square pixels.",
-        rect1.area()
-    );
+fn f1(a: i32) -> Option<i32> {
+    if a % 2 == 0 {
+        return None
+    }
+    return Some(1)
 }
