@@ -1,12 +1,14 @@
-mod client;
+pub mod client;
 
-mod network;
+pub mod network;
 
 #[cfg(test)]
 mod tests {
+    use crate::client;
+
     #[test]
     fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+        client::connect();
+        assert_eq!(4, 4);
     }
 }
